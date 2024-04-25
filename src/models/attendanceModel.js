@@ -1,22 +1,38 @@
 // models/attendanceModel.js
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/db');
-const Bus = require('./busModel');
-const Driver = require('./driverModel');
+const Employee = require('./employeeModel');
+const mongoose = require('mongoose');
 
-const Attendance = sequelize.define('Attendance', {
+const attendanceSchema = new mongoose.Schema({
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
-  date: {
-    type: DataTypes.DATE,
-    allowNull: false,
+  dateAttended: {
+    type: String,
+    required: true
   },
+  value: {
+    type: String,
+    required: true
+  },
+  lateMinutes: {
+    type: String,
+    default: "0"
+  },
+  slValue: {
+    type: String,
+    default: "1"
+  },
+  department: {
+    type: String
+  },
+  fullName: {
+    type: String
+  }
 });
 
 // Define associations
-Attendance.belongsTo(Bus, { foreignKey: 'busId' });
-Attendance.belongsTo(Driver, { foreignKey: 'driverId' });
+// Attendance.belongsTo(Employee, { foreignKey: '' });
+const Attendance = mongoose.model('Attendance', attendanceSchema);
 module.exports = Attendance;

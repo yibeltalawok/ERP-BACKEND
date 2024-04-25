@@ -1,6 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const sequelize = require("./config/db");
+const mongoose = require('mongoose');
 const swaggerUi = require("swagger-ui-express");
 require("dotenv").config();
 const { authenticateToken } = require("./middleware/authMiddleware");
@@ -12,9 +12,7 @@ const winston = require("winston");
 // const dbName = process.env.DB_NAME;
 const app = express();
 app.use(cors());
-const PORT = process.env.PORT || 3008;
-app.use(bodyParser.json());
-
+const PORT = process.env.PORT || 3000;
 // Body parsing middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -60,32 +58,32 @@ const storage = multer.diskStorage({
   },
 });
 // Routes import
-const busRoutes = require("./routes/busRoutes");
-const busOwnerRoutes = require("./routes/busOwnerRoutes");
-const assocationRoutes = require("./routes/assocationRoutes");
-const stationRoutes = require("./routes/stationRoute");
-const maintainanceRoutes = require("./routes/maintainanceRoute");
+// const busRoutes = require("./routes/busRoutes");
+// const busOwnerRoutes = require("./routes/busOwnerRoutes");
+// const assocationRoutes = require("./routes/assocationRoutes");
+// const stationRoutes = require("./routes/stationRoute");
+// const maintainanceRoutes = require("./routes/maintainanceRoute");
 const usersRoutes = require("./routes/userRoute");
-const messageRoutes = require("./routes/communicationRoute");
-const lostRoutes = require("./routes/lostRoute");
-const driverRoutes = require("./routes/driveRoute");
-const busTerminals = require("./routes/terminalRouting");
-const busAssignation = require("./routes/busAssignationRoute");
-const accidentRoutes = require("./routes/accidentRoute");
-const punishmentRoutes = require("./routes/punishmentRoute");
-const passengerRoutes = require("./routes/passengerRoute");
-const ticketsRoutes = require("./routes/ticketRoutes");
-const feedbackRoutes = require("./routes/feedbackRoute");
-const emergencyRoutes = require("./routes/emergencyRoute");
-const servicePaymentRoutes = require("./routes/servicePaymentRoute");
-const attendanceRoutes = require("./routes/attendanceRoute");
-const dashboardRoute = require("./routes/dashboardRoute");
-const authRoutes = require("./routes/loginRoute");
-const booking = require("./routes/bookingRoute");
-const penaltyCategoryRoutes = require("./routes/penalityCategoryRoute");
-const location = require("./routes/locationRoute");
-const driverBooking = require("./routes/drivierBookingRoute");
-const driverServicePaymnet = require("./routes/driverServicePaymnetRoute");
+// const messageRoutes = require("./routes/communicationRoute");
+// const lostRoutes = require("./routes/lostRoute");
+// const driverRoutes = require("./routes/driveRoute");
+// const busTerminals = require("./routes/terminalRouting");
+// const busAssignation = require("./routes/busAssignationRoute");
+// const accidentRoutes = require("./routes/accidentRoute");
+// const punishmentRoutes = require("./routes/punishmentRoute");
+// const passengerRoutes = require("./routes/passengerRoute");
+// const ticketsRoutes = require("./routes/ticketRoutes");
+// const feedbackRoutes = require("./routes/feedbackRoute");
+// const emergencyRoutes = require("./routes/emergencyRoute");
+// const servicePaymentRoutes = require("./routes/servicePaymentRoute");
+// const attendanceRoutes = require("./routes/attendanceRoute");
+// const dashboardRoute = require("./routes/dashboardRoute");
+// const authRoutes = require("./routes/loginRoute");
+// const booking = require("./routes/bookingRoute");
+// const penaltyCategoryRoutes = require("./routes/penalityCategoryRoute");
+// const location = require("./routes/locationRoute");
+// const driverBooking = require("./routes/drivierBookingRoute");
+// const driverServicePaymnet = require("./routes/driverServicePaymnetRoute");
 
 // Swagger documentation import
 // const swaggerDocuments = {
@@ -117,32 +115,32 @@ const driverServicePaymnet = require("./routes/driverServicePaymnetRoute");
 // };
 
 // Route definition
-app.use("/api", busRoutes);
-app.use("/api", busOwnerRoutes);
-app.use("/api", assocationRoutes);
-app.use("/api", stationRoutes);
-app.use("/api", maintainanceRoutes);
+// app.use("/api", busRoutes);
+// app.use("/api", busOwnerRoutes);
+// app.use("/api", assocationRoutes);
+// app.use("/api", stationRoutes);
+// app.use("/api", maintainanceRoutes);
 app.use("/api", usersRoutes);
-app.use("/api", messageRoutes);
-app.use("/api", lostRoutes);
-app.use("/api", driverRoutes);
-app.use("/api", busTerminals);
-app.use("/api", busAssignation);
-app.use("/api", accidentRoutes);
-app.use("/api", punishmentRoutes);
-app.use("/api", passengerRoutes);
-app.use("/api", ticketsRoutes);
-app.use("/api", feedbackRoutes);
-app.use("/api", emergencyRoutes);
-app.use("/api", servicePaymentRoutes);
-app.use("/api", attendanceRoutes);
-app.use("/api", dashboardRoute);
-app.use("/api", authRoutes);
-app.use("/api", booking);
-app.use("/api", penaltyCategoryRoutes);
-app.use("/api", location);
-app.use("/api", driverBooking);
-app.use("/api", driverServicePaymnet);
+// app.use("/api", messageRoutes);
+// app.use("/api", lostRoutes);
+// app.use("/api", driverRoutes);
+// app.use("/api", busTerminals);
+// app.use("/api", busAssignation);
+// app.use("/api", accidentRoutes);
+// app.use("/api", punishmentRoutes);
+// app.use("/api", passengerRoutes);
+// app.use("/api", ticketsRoutes);
+// app.use("/api", feedbackRoutes);
+// app.use("/api", emergencyRoutes);
+// app.use("/api", servicePaymentRoutes);
+// app.use("/api", attendanceRoutes);
+// app.use("/api", dashboardRoute);
+// app.use("/api", authRoutes);
+// app.use("/api", booking);
+// app.use("/api", penaltyCategoryRoutes);
+// app.use("/api", location);
+// app.use("/api", driverBooking);
+// app.use("/api", driverServicePaymnet);
 
 // Swagger documentation setup
 // Object.entries(swaggerDocuments).forEach(([key, value]) => {
@@ -169,11 +167,20 @@ app.use((err, req, res, next) => {
     .json({ error: `Internal Server Error : the Error is -> ${err}` });
 });
 
-sequelize.sync().then(() => {
-  app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+
+mongoose.connect('mongodb://localhost:27017/ERPDB', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+  .then(() => {
+    // console.log('Connected to MongoDB');
+    app.listen(PORT, () => {
+      console.log(`Connected to MongoDB AND Server running on port ${PORT}`);
+    });
+  })
+  .catch((error) => {
+    console.error('Error connecting to MongoDB:', error);
   });
-});
 
 // Handle process termination gracefully
 process.on("SIGINT", () => {
