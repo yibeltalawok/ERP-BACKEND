@@ -16,7 +16,7 @@ const IncentiveSchema = mongoose.Schema({
     default: "0"
   },
   productionDate: {
-    type: date
+    type: Date
   },
   targetPerDay: {
     type: String
@@ -70,6 +70,6 @@ const IncentiveSchema = mongoose.Schema({
 });
 
 // Define associations
-const Incentive=mongoose("Incentive",IncentiveSchema)
+const Incentive=mongoose.model("Incentive",IncentiveSchema)
 
 module.exports = Incentive;

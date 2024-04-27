@@ -14,5 +14,5 @@ const SamSchema = mongoose.Schema({
   }
 });
 
-const Sam=mongoose("Sam",SamSchema)
+const Sam=mongoose.model("Sam",SamSchema)
 module.exports = Sam;

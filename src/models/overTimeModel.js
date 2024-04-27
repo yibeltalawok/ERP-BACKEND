@@ -15,5 +15,5 @@ const OverTimeSchema = mongoose.Schema({
   }
 });
 
-const OverTime=mongoose("OverTime",OverTimeSchema)
+const OverTime=mongoose.model("OverTime",OverTimeSchema)
 module.exports = OverTime;

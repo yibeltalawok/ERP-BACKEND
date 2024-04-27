@@ -46,6 +46,6 @@ const InventorySchema =mongoose.Schema({
 });
 
 // Define association with Bus
-const Inventory= mongoose('InventorySchema',InventorySchema);
+const Inventory= mongoose.model('InventorySchema',InventorySchema);
 
 module.exports = Inventory;

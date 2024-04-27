@@ -39,5 +39,5 @@ const PurchasedSchema = mongoose.Schema( {
     type: String
   }
 });
-const Purchased=mongoose("Purchased",PurchasedSchema)
+const Purchased=mongoose.model("Purchased",PurchasedSchema)
 module.exports = Purchased;

@@ -35,5 +35,5 @@ const SalaryMasterSchema = mongoose.Schema({
     default: "0"
   }
 });
-const SalaryMaster =mongoose("SalaryMaster",SalaryMasterSchema)
+const SalaryMaster =mongoose.model("SalaryMaster",SalaryMasterSchema)
 module.exports = SalaryMaster;

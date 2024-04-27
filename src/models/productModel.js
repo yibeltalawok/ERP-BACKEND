@@ -51,5 +51,5 @@ const ProductSchema = mongoose.Schema({
 // Ticket.belongsTo(Passenger);
 // Ticket.belongsTo(Bus);
 // Ticket.belongsTo(Route);
-const Product=mongoose("Product",ProductSchema)
+const Product=mongoose.model("Product",ProductSchema)
 module.exports = Product;

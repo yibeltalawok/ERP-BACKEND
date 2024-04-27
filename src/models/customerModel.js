@@ -1,11 +1,7 @@
 
 const mongoose = require('mongoose'); 
 const CusomerSchema = mongoose.Schema({
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-  },
+
   customerCode: {
     type: String
   },
@@ -32,9 +28,9 @@ const CusomerSchema = mongoose.Schema({
     default: "noimage"
   },
   imagePath: {
-    type: string,
+    type: String,
     default: "noimage"
   }
 });
-const Customer=mongoose("Customer",CusomerSchema)
+const Customer=mongoose.model("Customer",CusomerSchema)
 module.exports = Customer;

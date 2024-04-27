@@ -1,14 +1,11 @@
 const Attendance = require('../models/attendanceModel');
-const Bus = require('../models/busModel');
-const Driver = require('../models/driverModel');
 
 exports.getAllAttendance = async (req, res, next) => {
   try {
-    const attendances = await Attendance.findAll({
-      include: [Bus, Driver],
-    });
+    const attendances = await Attendance.find();
     res.json(attendances);
   } catch (error) {
+    console.error('Error getting attendances:', error.message);
     next(error);
   }
 };
@@ -16,56 +13,59 @@ exports.getAllAttendance = async (req, res, next) => {
 exports.getAttendanceById = async (req, res, next) => {
   const { id } = req.params;
   try {
-    const attendance = await Attendance.findByPk(id, {
-      include: [Bus, Driver],
-    });
+    const attendance = await Attendance.findById(id);
     if (!attendance) {
-      res.status(404).json({ error: 'Attendance not found.' });
+      res.status(404).json({ error: 'attendance is not found.' });
     } else {
       res.json(attendance);
     }
   } catch (error) {
+    console.error('Error getting attendance by ID:', error.message);
     next(error);
   }
 };
 
 exports.createAttendance = async (req, res, next) => {
-  const { busId, driverId, date } = req.body;
   try {
-    const newAttendance = await Attendance.create({ busId, driverId, date });
-    res.status(201).json({ success: true, data: newAttendance });
+    console.log(req.body)
+    // Hash the password before storing it in the database
+    const newAttendance = new Attendance({ ...req.body});
+    const savedAttendance = await newAttendance.save();
+    res.status(201).json(savedAttendance);
   } catch (error) {
+    console.error('Error creating attendance:', error.message);
     next(error);
-  }
-};
+  }};
 
 exports.updateAttendance = async (req, res, next) => {
   const { id } = req.params;
-  const { busId, driverId, date } = req.body;
   try {
-    const attendance = await Attendance.findByPk(id);
-    if (!attendance) {
-      res.status(404).json({ error: 'Attendance not found.' });
+    const updatedAttendance = await Attendance.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
+    if (!updatedAttendance) {
+      res.status(404).json({ error: 'Attendance is not found.' });
     } else {
-      await attendance.update({ busId, driverId, date });
-      res.json({ success: true, data: attendance });
+      res.json(updatedAttendance);
     }
   } catch (error) {
+    console.error('Error updating attendance:', error.message);
     next(error);
   }
 };
 
+// Delete User by ID
 exports.deleteAttendance = async (req, res, next) => {
   const { id } = req.params;
   try {
-    const attendance = await Attendance.findByPk(id);
-    if (!attendance) {
+    const deletedAttendance = await Attendance.findByIdAndDelete(id);
+    if (!deletedAttendance) {
       res.status(404).json({ error: 'Attendance not found.' });
     } else {
-      await attendance.destroy();
-      res.json({ success: true, message: 'Attendance deleted successfully.' });
+      res.json({ message: 'Attendance deleted successfully.' });
     }
   } catch (error) {
+    console.error('Error deleting attendance:', error.message);
     next(error);
   }
 };

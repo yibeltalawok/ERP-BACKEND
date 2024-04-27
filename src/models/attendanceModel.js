@@ -3,11 +3,6 @@ const Employee = require('./employeeModel');
 const mongoose = require('mongoose');
 
 const attendanceSchema = new mongoose.Schema({
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-  },
   dateAttended: {
     type: String,
     required: true
@@ -24,12 +19,9 @@ const attendanceSchema = new mongoose.Schema({
     type: String,
     default: "1"
   },
-  department: {
-    type: String
-  },
-  fullName: {
-    type: String
-  }
+  // fullName: {
+  //   type: String
+  // }
 });
 
 // Define associations

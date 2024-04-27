@@ -1,10 +1,5 @@
 const mongoose = require('mongoose');
 const costPerMinSchema = mongoose.Schema({
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-  },
     date: {
       type: String
     },

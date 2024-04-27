@@ -23,7 +23,7 @@ const SupplierSchema = mongoose.Schema({
     type: [Number]
   },
   states: {
-    type: string
+    type: String
   },
   phoneNumber: {
     type: String
@@ -31,5 +31,5 @@ const SupplierSchema = mongoose.Schema({
 });
 
 // Define associations
-const Supplier=mongoose("Supplier",SupplierSchema)
+const Supplier=mongoose.model("Supplier",SupplierSchema)
 module.exports = Supplier;

@@ -1,11 +1,7 @@
 const mongoose= require('mongoose');
 
 const IncentiveSlabSchema = mongoose.Schema({
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-  },
+
   from: {
     type: String,
     default: "0"
@@ -22,5 +18,5 @@ const IncentiveSlabSchema = mongoose.Schema({
 });
 
 // Define associations
-const IncentiveSlab=mongoose("IncentiveSlab",IncentiveSlabSchema)
+const IncentiveSlab=mongoose.model("IncentiveSlab",IncentiveSlabSchema)
 module.exports = IncentiveSlab;

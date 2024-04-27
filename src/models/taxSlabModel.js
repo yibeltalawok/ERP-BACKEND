@@ -18,5 +18,5 @@ const TaxSlabSchema = mongoose.Schema( {
 });
 
 // Define associations
-const TaxSlab=mongoose("TaxSlab",TaxSlabSchema)
+const TaxSlab=mongoose.model("TaxSlab",TaxSlabSchema)
 module.exports = TaxSlab;

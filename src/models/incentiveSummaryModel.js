@@ -48,6 +48,6 @@ const IncentiveSummarySchema = mongoose.Schema({
 });
 
 // Define associations
-const IncentiveSummary=mongoose('IncentiveSummary', IncentiveSummarySchema);
+const IncentiveSummary=mongoose.model('IncentiveSummary', IncentiveSummarySchema);
 
 module.exports = IncentiveSummary;

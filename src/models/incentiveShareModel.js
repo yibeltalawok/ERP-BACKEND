@@ -31,6 +31,6 @@ const IncentiveShareSchema = mongoose.Schema({
 });
 
 // Define associations
-const IncentiveShare=mongoose("IncentiveShare",IncentiveShareSchema)
+const IncentiveShare=mongoose.model("IncentiveShare",IncentiveShareSchema)
 
 module.exports = IncentiveShare;

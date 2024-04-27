@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 const costPerSamSchema = mongoose.Schema({
 
   date: {
-    type: DataTypes.DATE,
-    allowNull: false,
+    type: Date,
+    require: true,
   },
 
   month: {
@@ -16,11 +16,11 @@ const costPerSamSchema = mongoose.Schema({
     type: String
   },
   totalMinuteProduced: {
-    type: DataTypes.STRING,
-    allowNull: false,
+    type: String,
+    require: true,
   },
   operationalCost: {
-    type: string,
+    type: String,
     default: "0"
   },
   costPerSam: {

@@ -27,5 +27,5 @@ const PayrolMasterSchema = mongoose.Schema({
 });
 //Define associations
 
-const payrolMaster=mongoose("payrolMaster",PayrolMasterSchema)
+const payrolMaster=mongoose.model("payrolMaster",PayrolMasterSchema)
 module.exports = payrolMaster;

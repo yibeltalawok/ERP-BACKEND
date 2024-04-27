@@ -1,23 +1,23 @@
-// routes/employeeRoutes.js
+// routes/UserRoutes.js
 const express = require('express');
 const router = express.Router();
-const employeeController = require('../controllers/usersController');
+const userController = require('../controllers/usersController');
 const { authenticateToken } = require('../middleware/authMiddleware');
 // CRUD routes
 
 // Create User
-router.post('/users', employeeController.createEmployee);
+router.post('/users', userController.createUser);
 
-// Get all Employees
-router.get('/users', employeeController.getAllEmployees);
+// Get all Users
+router.get('/users', userController.getAllUsers);
 
 // Get User by ID
-router.get('/users/:id', employeeController.getEmployeeById);
+router.get('/users/:id', userController.getUserById);
 
 // Update User by ID
-router.put('/users/:id', employeeController.updateEmployee);
+router.put('/users/:id', userController.updateUser);
 
 // Delete User by ID
-router.delete('/users/:id', employeeController.deleteEmployee);
+router.delete('/users/:id', userController.deleteUser);
 
 module.exports = router;
