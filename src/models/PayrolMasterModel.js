@@ -1,8 +1,6 @@
 // models/RouteModel.js
 const mongoose = require('mongoose');
-
 const PayrolMasterSchema = mongoose.Schema({
-
   date: {
     type: String
   },
@@ -23,9 +21,16 @@ const PayrolMasterSchema = mongoose.Schema({
   miscPayment: {
     type: String,
     default: "0"
-  }
-});
+  },
+  overTime: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'OverTime',
+  },
+  employee: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Employee',
+    required: true
+  }});
 //Define associations
-
 const payrolMaster=mongoose.model("payrolMaster",PayrolMasterSchema)
 module.exports = payrolMaster;

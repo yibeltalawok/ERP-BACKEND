@@ -16,7 +16,7 @@ const InventorySchema =mongoose.Schema({
   date: {
     type: String
   },
-  imagePath: {
+  photo: {
     type: String,
     default: "inventory default image"
   },
@@ -42,8 +42,27 @@ const InventorySchema =mongoose.Schema({
   assempledProduct: {
     type: Boolean,
     default: false
-  }
-});
+  },
+  purchased: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Purchased',
+    required: true
+  },
+  category: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Category',
+    required: true
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  item: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Item',
+    required: true
+  }});
 
 // Define association with Bus
 const Inventory= mongoose.model('InventorySchema',InventorySchema);

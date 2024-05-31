@@ -73,6 +73,10 @@ fullName: {
   password: {
     type: String
   },
+  role: {
+    type: String,
+    default: "admin"
+  },
   prfrm: {
     type: String,
     default: "0"
@@ -148,6 +152,10 @@ fullName: {
   medicationDeduction: {
     type: String,
     default: "0"
+  },
+  attendance: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Attendance',
   }
 });
 const Employee = mongoose.model('Employee', EmployeeSchema);

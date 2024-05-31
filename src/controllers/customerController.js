@@ -25,9 +25,20 @@ exports.getCustomerById = async (req, res, next) => {
 };
 exports.createCustomer = async (req, res, next) => {
   try {
-    console.log(req.body)
-    // Hash the password before storing it in the database
-    const newCustomer = new Customer({ ...req.body});
+    let file = req.files[0].filename;
+  //  console.log(file)
+    let fileData={ customerCode:req.body.customerCode,
+                   customerName:req.body.customerName,
+                   country:req.body.country,
+                   city:req.body.city,
+                   state:req.body.state,
+                   postalcode:req.body.postalcode,
+                   location:req.body.location,
+                   phoneNumber:req.body.phoneNumber,
+                   purchased:req.body.purchased,
+                   photo:file
+                 }
+      const newCustomer = new Customer({...fileData});
     const savedCustomer = await newCustomer.save();
     res.status(201).json(savedCustomer);
   } catch (error) {
@@ -39,7 +50,19 @@ exports.createCustomer = async (req, res, next) => {
 exports.updateCustomer = async (req, res, next) => {
   const { id } = req.params;
   try {
-    const updatedCustomer = await Customer.findByIdAndUpdate(id, req.body, {
+     let file = req.files[0].filename;
+      let fileData={ customerCode:req.body.customerCode,
+                     customerName:req.body.customerName,
+                     country:req.body.country,
+                     city:req.body.city,
+                     state:req.body.state,
+                     postalcode:req.body.postalcode,
+                     location:req.body.location,
+                     phoneNumber:req.body.phoneNumber,
+                     purchased:req.body.purchased,
+                     photo:file
+                   }
+    const updatedCustomer = await Customer.findByIdAndUpdate(id, fileData, {
       new: true,
     });
     if (!updatedCustomer) {

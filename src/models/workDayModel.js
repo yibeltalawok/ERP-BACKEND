@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 
 const WorkDaySchema = new mongoose.Schema({
 day: {
-    type: Date
+    type: String
   },
   month: {
     type: String

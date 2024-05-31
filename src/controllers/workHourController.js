@@ -1,5 +1,4 @@
-const WorkHour = require('../models/workDayModel');
-
+const WorkHour = require('../models/workHourModel');
 exports.getAllWorkHour = async (req, res, next) => {
   try {
     const allWorkHours = await WorkHour.find();
@@ -35,7 +34,6 @@ exports.createWorkHour = async (req, res, next) => {
     console.error('Error creating WorkHour:', error.message);
     next(error);
   }};
-
 
 exports.updateWorkHour = async (req, res, next) => {
   const { id } = req.params;

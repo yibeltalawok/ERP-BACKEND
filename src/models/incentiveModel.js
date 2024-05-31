@@ -1,7 +1,5 @@
 const mongoose= require('mongoose');
-
 const IncentiveSchema = mongoose.Schema({
-
   day: {
     type:String
   },
@@ -66,6 +64,16 @@ const IncentiveSchema = mongoose.Schema({
   operator: {
     "type": String,
     default: "0"
+  },
+  employee: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Employee',
+    required: true
+  },
+  sam: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Sam',
+    required: true
   }
 });
 

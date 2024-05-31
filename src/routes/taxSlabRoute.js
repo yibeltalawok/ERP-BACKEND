@@ -2,19 +2,20 @@ const express = require('express');
 const router = express.Router();
 const TaxSlabCntroller = require('../controllers/taxSlabController');
 
-// Create a new driver booking
-router.post('/taxSlab', TaxSlabCntroller.createTaxSlab);
+// Create a new taxe
+router.post('/taxes', TaxSlabCntroller.createTaxSlab);
 
-// Get all driver taxSlab
-router.get('/taxSlab', TaxSlabCntroller.getAllTaxSlab);
+// Get all taxe
+router.get('/taxes', TaxSlabCntroller.getAllTaxSlab);
 
-// Get driver booking by ID
-router.get('/taxSlab/:id', TaxSlabCntroller.getTaxSlabById);
+// Get taxe by ID
+router.get('/taxes/:id', TaxSlabCntroller.getTaxSlabById);
 
-// Update driver booking by ID
-router.put('/taxSlab/:id', TaxSlabCntroller.updateTaxSlab);
+// Update taxe by ID
+router.put('/taxes/:id', TaxSlabCntroller.updateTaxSlab);
 
-// Delete driver booking by ID
-router.delete('/taxSlab/:id', TaxSlabCntroller.deleteTaxSlab);
+// Delete taxe by ID
+router.delete('/taxes/:id', TaxSlabCntroller.deleteTaxSlab);
+router.get('/payrolinfo/:payrollId', TaxSlabCntroller.payrollInfo);
 
 module.exports = router;

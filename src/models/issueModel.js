@@ -42,9 +42,7 @@ const IssueSchema = mongoose.Schema( {
     type: Date,
     default: null
   },
-  items: {
-    type: []
-  },
+
   storeManagerSignature: {
     type: String
   },
@@ -59,7 +57,38 @@ const IssueSchema = mongoose.Schema( {
   },
   issueSignature: {
     type: String
-  }
+  },
+  items: {
+    type: []
+  },
+  inventory: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Inventory',
+  },
+  customer: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Customer',
+  },
+  storeManager: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+  },
+  finance: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+  },  
+  stockKeeper: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+  },
+  generalManager: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+  },
+  issuedBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+  },
 });
 const Issue=mongoose.model("Issue",IssueSchema)
 module.exports = Issue;

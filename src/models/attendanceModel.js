@@ -1,10 +1,8 @@
 // models/attendanceModel.js
-const Employee = require('./employeeModel');
 const mongoose = require('mongoose');
-
 const attendanceSchema = new mongoose.Schema({
   dateAttended: {
-    type: String,
+    type: Date,
     required: true
   },
   value: {
@@ -19,12 +17,12 @@ const attendanceSchema = new mongoose.Schema({
     type: String,
     default: "1"
   },
-  // fullName: {
-  //   type: String
-  // }
+  employee: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Employee',
+    required: true
+  }
 });
 
-// Define associations
-// Attendance.belongsTo(Employee, { foreignKey: '' });
 const Attendance = mongoose.model('Attendance', attendanceSchema);
 module.exports = Attendance;

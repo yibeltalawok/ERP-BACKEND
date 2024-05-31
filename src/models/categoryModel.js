@@ -10,6 +10,11 @@ const CategorySchema = new mongoose.Schema({
   },
   date: {
     type: String
+  },
+  purchased: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Purchased',
+    required: true
   }
   // Add other fields as needed
 });

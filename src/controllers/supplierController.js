@@ -40,6 +40,7 @@ exports.createSupplier = async (req, res, next) => {
 exports.updateSupplier = async (req, res, next) => {
   const { id } = req.params;
   try {
+    console.log(id,req.body)
     const updatedSupplier = await Supplier.findByIdAndUpdate(id, req.body, {
       new: true,
     });

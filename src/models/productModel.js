@@ -41,15 +41,11 @@ const ProductSchema = mongoose.Schema({
   standardSellingRate: {
     type: String
   },
-  imagePath: {
+  photo: {
     type: String,
     default: "noimage"
-  }
+  },
 });
 
-// Define associations
-// Ticket.belongsTo(Passenger);
-// Ticket.belongsTo(Bus);
-// Ticket.belongsTo(Route);
 const Product=mongoose.model("Product",ProductSchema)
 module.exports = Product;

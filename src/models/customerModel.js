@@ -1,7 +1,6 @@
 
 const mongoose = require('mongoose'); 
 const CusomerSchema = mongoose.Schema({
-
   customerCode: {
     type: String
   },
@@ -21,16 +20,19 @@ const CusomerSchema = mongoose.Schema({
     type: String
   },
   location: {
-    type: [Number]
+    type: String
   },
   phoneNumber: {
     type: String,
-    default: "noimage"
   },
-  imagePath: {
+  photo: {
     type: String,
     default: "noimage"
-  }
+  },
+  purchased: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Purchased',
+  },
 });
 const Customer=mongoose.model("Customer",CusomerSchema)
 module.exports = Customer;

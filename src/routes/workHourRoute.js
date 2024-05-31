@@ -3,18 +3,18 @@ const router = express.Router();
 const WorkHourCntroller = require('../controllers/workHourController');
 
 // Create a new driver booking
-router.post('/work-hour', WorkHourCntroller.createWorkHour);
+router.post('/work-hours', WorkHourCntroller.createWorkHour);
 
-// Get all driver work-hour
-router.get('/work-hour', WorkHourCntroller.getAllWorkHour);
+// Get all driver work-hours
+router.get('/work-hours', WorkHourCntroller.getAllWorkHour);
 
 // Get driver booking by ID
-router.get('/work-hour/:id', WorkHourCntroller.getWorkHourById);
+router.get('/work-hours/:id', WorkHourCntroller.getWorkHourById);
 
 // Update driver booking by ID
-router.put('/work-hour/:id', WorkHourCntroller.updateWorkHour);
+router.put('/work-hours/:id', WorkHourCntroller.updateWorkHour);
 
 // Delete driver booking by ID
-router.delete('/work-hour/:id', WorkHourCntroller.deleteWorkHour);
+router.delete('/work-hours/:id', WorkHourCntroller.deleteWorkHour);
 
 module.exports = router;
