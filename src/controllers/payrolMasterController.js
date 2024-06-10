@@ -15,6 +15,8 @@ exports.getPayrolMasterById = async (req, res, next) => {
   const { id } = req.params;
   try {
     const getPayrolMaster = await PayrolMaster.findById(id);
+    console.log(getPayrolMaster)
+
     if (!getPayrolMaster) {
       res.status(404).json({ error: 'PayrolMaster not found.' });
     } else {
@@ -27,7 +29,6 @@ exports.getPayrolMasterById = async (req, res, next) => {
 };
 exports.createPayrolMaster = async (req, res, next) => {
   try {
-    console.log(req.body)
     // Hash the password before storing it in the database
     const newPayrolMaster = new PayrolMaster({ ...req.body});
     const savedPayrolMaster = await newPayrolMaster.save();
@@ -71,8 +72,9 @@ exports.deletePayrolMaster = async (req, res, next) => {
   }
 };
   exports.getFinanceReport = async (req,res, next) => {
-  const date = req.query.date;
+  const da = req.query.date;
   try {
+    const date =new Date(da);
       const  Attendance  = require("../models/attendanceModel")
       const  OverTime  = require("../models/overTimeModel")
       const  TaxSlab  = require('../models/taxSlabModel')
@@ -105,7 +107,6 @@ exports.deletePayrolMaster = async (req, res, next) => {
       // } catch (error) {
       //   workedDays = 0;
       // }
-
       const resPaMa = await PayrolMaster.find(
       //   {  
       //   where: {
@@ -117,7 +118,6 @@ exports.deletePayrolMaster = async (req, res, next) => {
       for (let p = 0; p < resPaMa.length; p++) {
         // const resEmDe = await getEmployeeDetails(resPaMa[p].employee.toString(),date);
         const resEmDe = await Employee.find(resPaMa[p].employee)
-
         const idno = resEmDe[0]._id;
         const incentiveSalary = resEmDe[0].incentiveSalary;
         const fullName = resEmDe[0].fullName;
@@ -132,7 +132,7 @@ exports.deletePayrolMaster = async (req, res, next) => {
         const department = resEmDe[0].department;
         const subDept = resEmDe[0].subDept;
         const salary = resEmDe[0].salary;
-        const pension = salary * 0.07;
+        const pension = parseFloat(salary) * 0.07;
         const totalSalary = resEmDe[0].totalSalary;
         const overtime = resEmDe[0].overtime;
         const prfrm = resEmDe[0].prfrm;
@@ -174,21 +174,24 @@ exports.deletePayrolMaster = async (req, res, next) => {
         // for (let o = 0; o < resPaMa[p].overtime.length; o++) {
         //   overTimeDays += parseFloat(resPaMa[p].overtime[o].value);
         // }
-    
         const OverTimePayment = perDaySalary * overTimeDays;
-        const grossEarning = workedSalary + OverTimePayment + responseAllow + homeAllow + positionalAllow + profAllow + absentIncentive + ironIncentive + foodAllow + mobileAllow + incentiveSalary + miscPayment + payback;
+        const grossEarning = workedSalary + OverTimePayment + responseAllow + homeAllow + positionalAllow + 
+              profAllow + absentIncentive + ironIncentive + foodAllow + mobileAllow + incentiveSalary + 
+              miscPayment + payback;
         const taxableEarning = workedSalary + taxableHomeAllow + taxableProfAllow;
-        const incomeTax = await TaxSlab.find({
-          where: {
-            and: [
-              { initial: { lte: taxableEarning } },
-              { end: { gte: taxableEarning } },
-            ],
-          },
-        }).then(res => ((taxableEarning * res[0].deduction / 100) - res[0].extraDeduction)).catch(err => console.log(err));
-    
-        const totalDeduction = incomeTax + pension + advancedRecievable + labourContribution + costSharing + penality;
-        const netSalary = grossEarning - totalDeduction;
+        let incomeTax=0;
+        const income = await TaxSlab.find({where: {and: [{ initial: { lte: taxableEarning } },
+                                                         { end: { gte: taxableEarning } },],},})
+        if(income.length>0){
+          incomeTax=(taxableEarning * income[0].deduction / 100) - income[0].extraDeduction
+         } 
+        else
+          {console.log("No income")} ;
+
+        let totalDeduction=0;
+        let netSalary =0;
+        totalDeduction= incomeTax + pension + advancedRecievable + labourContribution + costSharing + penality;
+        netSalary = grossEarning - totalDeduction;
     
         data.push({
           fullName, idno, department, position, salary, responseAllow,
@@ -197,7 +200,7 @@ exports.deletePayrolMaster = async (req, res, next) => {
           labourContribution, womanUnion, creditAssociation, costSharing, workedDays,
           perDaySalary, workedSalary, overTimeDays, payback, advancedRecievable, penality,
           miscPayment, pension, incomeTax, taxableEarning, medicationDeduction, grossEarning,
-          profAllow, homeAllow, netSalary, ironIncentive, bankAccountNum, totalDeduction
+          netSalary, ironIncentive, bankAccountNum, totalDeduction
         });
       }
      res.json(data);
@@ -280,12 +283,12 @@ exports.summarySheet= async (req, res, next) => {
       }
       let workingDays = []
       if (payrol.length > 0) {
-        const slab =await TaxSlab.find()
-          for (let i = 0; i < payrol.length; i++) {
-            workingDays[i] = noOfSundays
-            // let attendance = getAttendance(payrol[i].employee._id)
-            let value = await Attendance.find({
-              // employee: empId 
+          const slab =await TaxSlab.find()
+            for (let i = 0; i < payrol.length; i++) {
+                workingDays[i] = noOfSundays
+                // let attendance = getAttendance(payrol[i].employee._id)
+                let value = await Attendance.find({
+                // employee: empId 
                  })
                  let attendance=[];
                  for(let f=0;f<value.length;f++){
@@ -349,12 +352,11 @@ exports.summarySheet= async (req, res, next) => {
                     }
                   }
                 }
-
                 // if (i == res.length - 1) {
                   // console.log(res, workingDays, slab)
 
                   // const manageData = async (res, workingDays, slab)=>{
-                    let otHr125 = []
+                    let otHr125= []
                     let otHr15 = []
                     let otHr20 = []
                     let otHr25 = []
@@ -449,13 +451,11 @@ exports.summarySheet= async (req, res, next) => {
                                   incomeTax = tax.toFixed(2)
                                 }
                                 //total Diduction=========================================
-                      
                                 let salaryPerWorkDay = (
                                   (parseFloat(workingDays[i]) *
                                     parseFloat(payrol[i].employee.salary)) /
                                   parseInt(totalWorkDays)
                                 ).toFixed(2)
-                      
                                 let totalDeduction = (
                                   parseFloat(payrol[i].employee.salary) * 0.07 +
                                   parseFloat(payrol[i].employee.salary) * 0.11 +
@@ -465,7 +465,6 @@ exports.summarySheet= async (req, res, next) => {
                                   parseFloat(incomeTax) +
                                   parseFloat(salaryPerWorkDay) * 0.01
                                 ).toFixed(2)
-                      
                                 let grossSalary = 0 //   //Gross Earning============================================
                                 if (payrol[i].employee.department == 'Supervisor') {
                                   grossSalary = (
@@ -483,17 +482,15 @@ exports.summarySheet= async (req, res, next) => {
                                     parseFloat(payrol[i].employee.transportPay)
                                   ).toFixed(2)
                                 }
-                      
                                 let netSalary = (
                                   parseFloat(grossSalary) - parseFloat(totalDeduction)
                                 ).toFixed(2)
-                      
+
                                 netSalary = parseFloat(netSalary) > 0 ? parseFloat(netSalary) : 0
-                      
+
                                 let netPay = (grossSalary - totalDeduction).toFixed(2)
                                 tableValue.push({
-                                  idno: payrol[i].employee.idno,
-                                  id: payrol[i].employee.id,
+                                  id:payrol[i].employee.id,
                                   fullName: payrol[i].employee.fullName,
                                   department: payrol[i].employee.department,
                                   subDept: payrol[i].employee.subDept,
@@ -503,10 +500,9 @@ exports.summarySheet= async (req, res, next) => {
                                   incentive: payrol[i].employee.incentiveSalary,
                                   transportPay: payrol[i].employee.transportPay,
                                   costSharing: (
-                                    (parseFloat(payrol[i].employee.costSharing) / 100) *
+                                  ( parseFloat(payrol[i].employee.costSharing) / 100) *
                                     parseFloat(payrol[i].employee.salary)
-                                  ).toFixed(2),
-                      
+                                   ).toFixed(2),
                                   otHr125: otHr125[i],
                                   otHr15: otHr15[i],
                                   otHr20: otHr20[i],
@@ -515,12 +511,8 @@ exports.summarySheet= async (req, res, next) => {
                                   absentIncentive: payrol[i].employee.absentIncentive,
                                   absent: 0,
                                   incomeTax: incomeTax,
-                                  pensionContribution: (
-                                    parseFloat(payrol[i].employee.salary) * 0.07
-                                  ).toFixed(2),
-                                  pensionDeduction: (
-                                    parseFloat(payrol[i].employee.salary) * 0.11
-                                  ).toFixed(2),
+                                  pensionContribution:(parseFloat(payrol[i].employee.salary) * 0.07).toFixed(2),
+                                  pensionDeduction:(parseFloat(payrol[i].employee.salary) * 0.11).toFixed(2),
                                   payback: payrol[i].payback,
                                   totalDeduction: totalDeduction,
                                   grossSalary: grossSalary,
@@ -530,11 +522,10 @@ exports.summarySheet= async (req, res, next) => {
                                 })
                                 if (tableValue.length == payrol.length) {
                                   res.json(tableValue);
-                                }
-                              }
+                                }}
                             // }
                           // }     
-                    }
+                     }
                  //}            
                 // }
           }

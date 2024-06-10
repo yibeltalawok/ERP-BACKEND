@@ -12,7 +12,7 @@ const winston = require("winston");
 // const dbName = process.env.DB_NAME;
 const app = express();
 app.use(cors());
-const PORT = process.env.PORT || 3003;
+const PORT ='https://technotes.onrender.com';
 // Body parsing middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

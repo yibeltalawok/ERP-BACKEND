@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon --legacy-watch src/app.js"
+    "start": "nodemon --legacy-watch src/app.js",
+    "build:client": "webpack --mode production",
+    "build:server": "babel src -d dist",
+    "build": "npm run build:client && npm run build:server"
   },
   "keywords": [],
   "author": "",

@@ -8,7 +8,7 @@ router.get('/payrols/:id', PayrolMasterController.getPayrolMasterById);
 router.post('/payrols', PayrolMasterController.createPayrolMaster);
 router.put('/payrols/:id', PayrolMasterController.updatePayrolMaster);
 router.delete('/payrols/:id', PayrolMasterController.deletePayrolMaster);
-router.get('/emp-payrol', PayrolMasterController.getFinanceReport)
-router.get('/summarysheet', PayrolMasterController.summarySheet)
+router.get('/finance-report', PayrolMasterController.getFinanceReport)
+router.get('/summarysheets', PayrolMasterController.summarySheet)
 
 module.exports = router;
