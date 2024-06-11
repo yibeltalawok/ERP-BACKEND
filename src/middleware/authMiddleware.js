@@ -26,7 +26,6 @@ console.log('Decoded Token without Verification:', decodedToken);
          return res.status(500).json({ error: 'Internal Server Error' });
        }
      }
-
      req.user = user; // Attach user data to the request
      next();
    });
