@@ -5,5 +5,5 @@ services:
     buildCommand: npm run build
     startCommand: npm run start
     envVars:
-      - key: MONGODB_URI
-        value: ${MONGODB_URI}
+      - key: MONGODB_URL
+        value: ${MONGODB_URL}
