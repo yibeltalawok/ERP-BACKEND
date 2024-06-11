@@ -3,9 +3,7 @@ const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
 const swaggerUi = require("swagger-ui-express");
 const path = require('path');
-require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
-console.log('here...', path.resolve(__dirname, '../.env'), process.env.MONGODB_URL)
-const { authenticateToken } = require("./middleware/authMiddleware");
+require('dotenv').config();
 const multer = require("multer");
 const helmet = require("helmet");
 const cors = require("cors");
@@ -169,7 +167,7 @@ app.use((err, req, res, next) => {
 });
 
 
-mongoose.connect(process.env.MONGODB_URI, {
+mongoose.connect(process.env.MONGODB_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
