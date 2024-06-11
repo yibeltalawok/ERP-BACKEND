@@ -1,9 +1,9 @@
 services:
   - type: web
-    name: my-express-app
+    name: ERP-BACKEND
     env: node
-    buildCommand: npm ci
-    startCommand: node src/index.js
+    buildCommand: npm run build
+    startCommand: npm run start
     envVars:
       - key: MONGODB_URI
         value: ${MONGODB_URI}

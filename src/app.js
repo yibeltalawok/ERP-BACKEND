@@ -2,7 +2,9 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
 const swaggerUi = require("swagger-ui-express");
-require("dotenv").config();
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
+console.log('here...', path.resolve(__dirname, '../.env'), process.env.MONGODB_URL)
 const { authenticateToken } = require("./middleware/authMiddleware");
 const multer = require("multer");
 const helmet = require("helmet");
