@@ -2,7 +2,7 @@ const Issue = require('../models/issueModel');
 const Item =require("../models/itemModel");
 exports.getAllIssue = async (req, res, next) => {
   try {
-    const allIssues = await Issue.find();
+    const allIssues = await Issue.find().populate('issuedBy');
     res.json(allIssues);
   } catch (error) {
     console.error('Error getting Issues:', error.message);
@@ -70,30 +70,30 @@ exports.deleteIssue = async (req, res, next) => {
   }
 };
 
-exports.getItemListDeatiled = async (req, res, next) => {
-  const issueId=req.params.issueId;
-  try {
-    let issueData = await Issue.findById(issueId)
-    const itemList=[]
-    const issueList=[]
-    issueList.push(issueData)
-    if(issueList.length>0){
-      for(let i=0;i<issueList.length;i++){
-        let item = await Item.findById(issueList[i].items)
-        let itemData=[]
-        itemData.push(item)
-       if(itemData.length){
-        itemData[0].available = issueList[i].issueSize
-          itemList.push(itemData[0])
-       }
-       }
-       res.json(itemList);
-      }
-  } catch (error) {
-    console.error('Error getting Issues:', error.message);
-    next(error);
-  }
-};
+// exports.getItemListDeatiled = async (req, res, next) => {
+//   const issueId=req.params.issueId;
+//   try {
+//     let issueData = await Issue.findById(issueId)
+//     const itemList=[]
+//     const issueList=[]
+//     issueList.push(issueData)
+//     if(issueList.length>0){
+//       for(let i=0;i<issueList.length;i++){
+//         let item = await Item.findById(issueList[i].items)
+//         let itemData=[]
+//         itemData.push(item)
+//        if(itemData.length){
+//         itemData[0].available = issueList[i].issueSize
+//           itemList.push(itemData[0])
+//        }
+//        }
+//        res.json(itemList);
+//       }
+//   } catch (error) {
+//     console.error('Error getting Issues:', error.message);
+//     next(error);
+//   }
+// };
 
 exports.getIssueDeatil = async (req, res, next) => {
   const issueId=req.params.issueId;
@@ -101,6 +101,7 @@ exports.getIssueDeatil = async (req, res, next) => {
      let issueData = await Issue.findById(issueId).populate('issuedBy')
      const itemList=[]
      const issueList=[]
+     let issueDataValue=[]
      issueList.push(issueData)
        if(issueList[0].items.length > 0) {
           let itemData = []
@@ -120,26 +121,27 @@ exports.getIssueDeatil = async (req, res, next) => {
                 id: result[0].id,
                   })
               if (i == issueList[0].items.length - 1) {
-                let issueData = {
-                  fullName: issueList[0].issuedBy,
-                  email: issueList[0].issuedBy,
+                issueDataValue.push({
+                  issuedBy: issueList[0].issuedBy,
+                  email: issueList[0].issuedBy?.email,
                   issueType: issueList[0].type,
                   issueCode: issueList[0].issueCode,
                   issueReason: issueList[0].reason,
+                  issueDate: issueList[0].issueDate,
                   inventoryName: issueList[0].inventory.inventoryName,
                   issueSignature: issueList[0].issueSignature,
-                  storeManagerSignature: issueList[0].storeManagerSignature,
-                  financeSignature: issueList[0].financeSignature,
-                  generalManagerSignature: issueList[0].generalManagerSignature,
-                  storeSignature: issueList[0].storeSignature,
+                  storeManager: issueList[0].storeManagerSignature,
+                  finance: issueList[0].financeSignature,
+                  generalManager: issueList[0].generalManagerSignature,
+                  store: issueList[0].storeSignature,
                   items: itemData,
-                }
-                res.json(issueData);
+                })
+                res.json(issueDataValue);
               }
             }
             else {
-              let issueData = {
-                fullName: issueList[0].issuedBy.fullName,
+              issueDataValue.push({
+                issuedBy: issueList[0].issuedBy.fullName,
                 email: issueList[0].issuedBy.email,
                 issueType: issueList[0].type,
                 issueCode: issueList[0].issueCode,
@@ -147,9 +149,9 @@ exports.getIssueDeatil = async (req, res, next) => {
                 inventoryName: issueList[0].inventory.inventoryName,
                 issueSignature: issueList[0].issueSignature,
                 items: [],
-              }
-              res.json(issueData);
-            } }}
+              })
+              res.json(issueDataValue);
+              }}}
   } catch (error) {
     console.error('Error getting Issues:', error.message);
     next(error);

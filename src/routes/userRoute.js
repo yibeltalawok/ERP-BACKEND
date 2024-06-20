@@ -6,18 +6,6 @@ const { authenticateToken } = require('../middleware/authMiddleware');
 // CRUD routes
 
 // Create User
-router.post('/users', userController.createUser);
-
-// Get all Users
-router.get('/users', userController.getAllUsers);
-
-// Get User by ID
-router.get('/users/:id', userController.getUserById);
-
-// Update User by ID
-router.put('/users/:id', userController.updateUser);
-
-// Delete User by ID
-router.delete('/users/:id', userController.deleteUser);
+router.post('/login', userController.loginUser);
 
 module.exports = router;

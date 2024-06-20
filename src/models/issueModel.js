@@ -71,23 +71,23 @@ const IssueSchema = mongoose.Schema( {
   },
   storeManager: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'Employee',
   },
   finance: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'Employee',
   },  
   stockKeeper: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'Employee',
   },
   generalManager: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'Employee',
   },
   issuedBy: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'Employee',
   },
 });
 const Issue=mongoose.model("Issue",IssueSchema)

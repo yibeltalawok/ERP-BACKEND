@@ -1,9 +1,7 @@
 // models/maintenanceModel.js
 
 const mongoose = require('mongoose'); // Import the Bus model
-
 const InventorySchema =mongoose.Schema({
-
   inventoryName: {
     type: String
   },
@@ -55,7 +53,7 @@ const InventorySchema =mongoose.Schema({
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'Employee',
     required: true
   },
   item: {
@@ -66,5 +64,4 @@ const InventorySchema =mongoose.Schema({
 
 // Define association with Bus
 const Inventory= mongoose.model('InventorySchema',InventorySchema);
-
 module.exports = Inventory;

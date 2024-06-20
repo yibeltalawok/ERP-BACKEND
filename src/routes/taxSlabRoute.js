@@ -16,6 +16,6 @@ router.put('/taxes/:id', TaxSlabCntroller.updateTaxSlab);
 
 // Delete taxe by ID
 router.delete('/taxes/:id', TaxSlabCntroller.deleteTaxSlab);
-router.get('/payrollInfo/:id', TaxSlabCntroller.payrollInfo);
+router.get('/payrollInfo/:payrollId', TaxSlabCntroller.payrollInfo);
 
 module.exports = router;

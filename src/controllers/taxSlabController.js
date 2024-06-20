@@ -75,15 +75,20 @@ exports.deleteTaxSlab = async (req, res, next) => {
 };
 // Delete User by ID
 exports.payrollInfo = async (req,res, next) => {
-   const date=req.query.date;
    const payrollId=req.params.payrollId;
 
   try {
-
+    let date=""
     let filter = { include: ['employee'], where: { id: payrollId } }
+    if(req.query.date){
+      date=req.query.date;
+    }
+    else{
+       date=new Date()
+    }
     let d = new Date(date)
     let month = d.getMonth() + 1
-    let year = d.getFullYear()
+    let year = d.getFullYear(payrollId)
     let days = 0
     if (month == new Date().getMonth() + 1) {
       days = new Date().getDate()
@@ -103,53 +108,53 @@ exports.payrollInfo = async (req,res, next) => {
     let totalDays = workDay.length > 0 ? workDay[0].noDays : 30
     let payrol= await PayrollMaster.findById(payrollId).populate('employee')
       let items = []
-      let temp = payrol
+      // let payrol = payrol
       items.push({
-          date: temp.date,
-          fullName: temp.employee.fullName,
-          gender: temp.employee.gender,
-          joiningDate: temp.employee.joiningDate,
-          department: temp.employee.department,
-          subDept: temp.employee.subDept,
-          salary: temp.employee.salary,
+          date: payrol?.date,
+          fullName: payrol?.employee?.fullName,
+          gender: payrol.employee.gender,
+          joiningDate: payrol.employee.joiningDate,
+          department: payrol.employee.department,
+          subDept: payrol.employee.subDept,
+          salary: payrol.employee.salary,
           salaryPerWorkDay: "0",
           grossSalary: "0",
           attBonus: "0",
-          dailyRate: (parseFloat(temp.employee.salary) / parseFloat(totalDays)).toFixed(2),
-          perHrRate: (parseFloat(temp.employee.salary) / 192).toFixed(2),
-          transportPay: temp.employee.transportPay,
-          labourUnion: (parseFloat(temp.employee.salary) * 0.01).toFixed(2),
-          ironIncentive: temp.employee.ironIncentive,
-          pensionDeduction: (parseFloat(temp.employee.salary) * 0.07).toFixed(2),
-          pensionContribution: (parseFloat(temp.employee.salary) * 0.11).toFixed(2),
-          costSharing: temp.employee.costSharing,
-          responseAllow: temp.employee.responseAllow,
-          homeAllow: temp.employee.homeAllow,
-          incentiveSalary: temp.employee.incentiveSalary,
+          dailyRate: (parseFloat(payrol.employee.salary) / parseFloat(totalDays)).toFixed(2),
+          perHrRate: (parseFloat(payrol.employee.salary) / 192).toFixed(2),
+          transportPay: payrol.employee.transportPay,
+          labourUnion: (parseFloat(payrol.employee.salary) * 0.01).toFixed(2),
+          ironIncentive: payrol.employee.ironIncentive,
+          pensionDeduction: (parseFloat(payrol.employee.salary) * 0.07).toFixed(2),
+          pensionContribution: (parseFloat(payrol.employee.salary) * 0.11).toFixed(2),
+          costSharing: payrol.employee.costSharing,
+          responseAllow: payrol.employee.responseAllow,
+          homeAllow: payrol.employee.homeAllow,
+          incentiveSalary: payrol.employee.incentiveSalary,
           taxIncome: "0",
           incomeTaxDeduction: "0",
-          absentIncentive: temp.employee.absentIncentive,
+          absentIncentive: payrol.employee.absentIncentive,
           totaWorkDay: totalDays,
-          employeeId: temp.employee._id,
+          employeeId: payrol.employee._id,
           attendance: [],
           workingDays: "0",
           otHr: [],
           otDay: "0",
           otBirr: [],
           otTotalBirr: "0",
-          remainingAl: temp.remainingAl,
-          miscPayment: temp.miscPayment,
+          remainingAl: payrol.remainingAl,
+          miscPayment: payrol.miscPayment,
           miscBirr: "0",
           taxDeduction: "0",
           totalDeduction: "0",
           netPayment: "0",
-          payback: temp.payback,
+          payback: payrol.payback,
           netSalary: "0",
-          id: temp._id,
+          id: payrol._id,
       })
 
       let value = await Attendance.find({
-        employee: temp.employee._id 
+        employee: payrol.employee._id 
            })
            let attendance = []
            let atDate = new Date()
@@ -429,7 +434,7 @@ exports.payrollInfo = async (req,res, next) => {
                     items[0].netPayment = (parseFloat(items[0].miscBirr) - parseFloat(items[0].taxDeduction)).toFixed(2);
                     items[0].netSalary = (items[0].grossSalary - items[0].totalDeduction).toFixed(2);
                     // cb(null, [{ type: "success", item: items[0] }])
-                    res.json({item: items[0]});
+                    res.json(items[0]);
                // }     
     }
   } catch (error) {

@@ -1,4 +1,5 @@
 const Employee = require('../models/employeeModel');
+const bcrypt = require('bcrypt');
 
 exports.getAllEmployee = async (req, res, next) => {
   try {
@@ -26,9 +27,9 @@ exports.getEmployeeById = async (req, res, next) => {
 };
 exports.createEmployee = async (req, res, next) => {
   try {
-    console.log(req.body)
     // Hash the password before storing it in the database
-    const newEmployee = new Employee({ ...req.body});
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    const newEmployee = new Employee({ ...req.body,password: hashedPassword});
     const savedEmployee = await newEmployee.save();
     res.status(201).json(savedEmployee);
   } catch (error) {
@@ -40,7 +41,10 @@ exports.createEmployee = async (req, res, next) => {
 exports.updateEmployee = async (req, res, next) => {
   const { id } = req.params;
   try {
-    const updatedEmployee = await Employee.findByIdAndUpdate(id, req.body, {
+    // Hash the password before storing it in the database
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    const newEmployee = new Employee({ ...req.body,password: hashedPassword});
+    const updatedEmployee = await Employee.findByIdAndUpdate(id, newEmployee, {
       new: true,
     });
     if (!updatedEmployee) {

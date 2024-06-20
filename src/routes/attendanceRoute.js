@@ -14,4 +14,5 @@ router.put('/attendances/:id', attendanceController.updateAttendance);
 router.delete('/attendances/:id', attendanceController.deleteAttendance);
 router.get('/getAttendance',getRoutesByParamsValidation,attendanceController.getAttendanceByParams);
 router.get('/search',attendanceController.getAttendanceByDateRange);
+router.delete('/deleteAll',attendanceController.deleteAllData);
 module.exports = router;

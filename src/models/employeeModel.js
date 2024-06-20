@@ -39,6 +39,9 @@ fullName: {
   joiningDate: {
     type: String
   },
+  birthDate: {
+    type: String
+  },
   department: {
     type: String,
     required: true
@@ -48,7 +51,6 @@ fullName: {
   },
   salary: {
     type: String,
-    required: true
   },
   totalSalary: {
     type: String,
