@@ -58,7 +58,7 @@ const storage = multer.diskStorage({
   },
 });
 // Routes import
-// const busRoutes = require("./routes/busRoutes");
+const dashboardRoutes = require("./routes/dashboardRoute");
 const usersRoutes = require("./routes/userRoute");
 const categoryRoutes = require("./routes/categoryRoute");
 const employeeRoutes = require("./routes/employeeRoutes");
@@ -115,6 +115,7 @@ const WorkHourRoutes = require("./routes/workHourRoute");
 // };
 
 // Route definition
+app.use("/api",dashboardRoutes)
 app.use("/api", CostSummaryRoutes);
 app.use("/api", costPerSamRoutes);
 app.use("/api", costPerMinuteRoutes);
